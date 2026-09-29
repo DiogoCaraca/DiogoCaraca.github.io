@@ -1,0 +1,56 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { locales } from '../i18n';
+
+// Renders nothing until a second locale exists (landing brief section 7).
+const current = Astro.currentLocale ?? 'en';
+const names: Record<string, string> = { en: 'English', de: 'Deutsch', pt: 'Português' };
+const path = Astro.url.pathname.replace(new RegExp(`^/(${locales.join('|')})(?=/|$)`), '') || '/';
+---
+
+{
+  locales.length >= 2 && (
+    <nav aria-label="Language" class="lang">
+      <ul>
+        {locales.map((locale) => (
+          <li>
+            <a
+              href={getRelativeLocaleUrl(locale, path)}
+              hreflang={locale}
+              lang={locale}
+              aria-current={locale === current ? 'true' : undefined}
+            >
+              {locale.toUpperCase()}
+              <span class="sr-only"> {names[locale] ?? locale}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}
+
+<style>
+  .lang ul {
+    display: flex;
+    gap: var(--space-1);
+    list-style: none;
+  }
+
+  .lang a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding-inline: var(--space-2);
+    border: 1px solid transparent;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    text-decoration: none;
+  }
+
+  .lang a[aria-current='true'] {
+    border-color: var(--border-strong);
+    color: var(--text);
+  }
+</style>

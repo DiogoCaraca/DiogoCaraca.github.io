@@ -1,0 +1,80 @@
+---
+import { useTranslations } from '../i18n';
+import { SITE_REPO, GITHUB_USER } from '../lib/github';
+
+interface Props {
+  updated?: string;
+}
+
+const { updated } = Astro.props;
+const t = useTranslations(Astro.currentLocale);
+const buildDate = new Date().toISOString().slice(0, 10);
+const links = [
+  { href: `https://github.com/${GITHUB_USER}`, label: 'GitHub', name: t.a11y.githubProfile },
+  { href: 'https://www.linkedin.com/in/diogo-caraca/', label: 'LinkedIn', name: t.a11y.linkedinProfile },
+  { href: 'https://www.instagram.com/diogo.miguel.caraca/', label: 'Instagram', name: t.a11y.instagramProfile },
+];
+---
+
+<footer class="footer">
+  <div class="container">
+    <ul class="links">
+      {
+        links.map((link) => (
+          <li>
+            <a href={link.href} aria-label={link.name}>
+              {link.label}
+              <span class="arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="meta">
+      {updated && <>{updated} · </>}
+      {t.footer.location} · {t.footer.builtWith} · <a href={`https://github.com/${GITHUB_USER}/${SITE_REPO}`}
+        >{t.footer.source}</a
+      >{' · '}{t.footer.lastBuild} <time datetime={buildDate}>{buildDate}</time>
+    </p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    padding-block: var(--space-7);
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-5);
+    list-style: none;
+  }
+
+  .links a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    min-height: 44px;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .links a:hover {
+    color: var(--accent-text);
+  }
+
+  .meta {
+    margin-top: var(--space-4);
+    max-width: none;
+    color: var(--text-subtle);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+  }
+
+  .meta a {
+    color: var(--text-muted);
+  }
+</style>

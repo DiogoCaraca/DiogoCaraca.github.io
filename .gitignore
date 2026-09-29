@@ -1,0 +1,11 @@
+# Private source documents (e.g. the CV with address, phone, email, and date of birth).
+# Never commit or publish; the site repo will be public on GitHub Pages.
+content/private/
+
+# Build output and dependencies
+node_modules/
+dist/
+.astro/
+
+# Local settings
+.env

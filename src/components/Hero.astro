@@ -1,0 +1,393 @@
+---
+import { Picture } from 'astro:assets';
+import { useTranslations } from '../i18n';
+import { getPhoto } from '../lib/photos';
+import { GITHUB_USER } from '../lib/github';
+
+const t = useTranslations(Astro.currentLocale);
+const headshot = getPhoto('headshot');
+---
+
+<section class="hero" id="top" aria-labelledby="hero-name">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="container hero-grid">
+    <div class="intro">
+      <div class="greeting-row">
+        {
+          headshot && (
+            <Picture
+              src={headshot}
+              alt={t.hero.headshotAlt}
+              widths={[56, 88, 112, 176]}
+              sizes="(min-width: 900px) 88px, 56px"
+              formats={['avif', 'webp']}
+              width={88}
+              height={88}
+              fit="cover"
+              position="top"
+              loading="eager"
+              fetchpriority="high"
+              class="headshot bevel-sm"
+            />
+          )
+        }
+        <p class="index greeting" aria-hidden="true">{t.hero.greeting}</p>
+      </div>
+
+      <h1 id="hero-name" class="name" data-text={t.hero.name}>{t.hero.name}</h1>
+      <p class="role">{t.hero.role}</p>
+      <p class="value">{t.hero.value}</p>
+      <p class="location">
+        <span class="pin" aria-hidden="true">◉</span>
+        {t.hero.location}
+      </p>
+
+      <div class="actions">
+        <a class="btn btn-primary" href={`https://github.com/${GITHUB_USER}`} aria-label={t.a11y.githubProfile}>
+          {t.hero.github}
+          <span class="arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="btn btn-secondary" href="https://www.linkedin.com/in/diogo-caraca/">
+          <span class="label-long">{t.hero.linkedin}</span>
+          <span class="label-short">{t.hero.linkedinShort}</span>
+          <span class="arrow" aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </div>
+
+    <aside class="whoami bevel" aria-label={t.a11y.quickFacts}>
+      <div class="titlebar" aria-hidden="true">
+        <span>~/diogo</span>
+        <span class="dots"><i></i><i></i><i></i></span>
+      </div>
+      <div class="body">
+        <p class="prompt" aria-hidden="true"><span class="dollar">$</span> <span class="cmd">whoami</span><span class="caret"></span></p>
+        <dl>
+          {
+            t.hero.whoami.map((row) => (
+              <div class={`row row-${row.key}`}>
+                <dt>{row.key}</dt>
+                <dd>
+                  {'short' in row ? (
+                    <>
+                      <span class="long">{row.value}</span>
+                      <span class="short" aria-hidden="true">{row.short}</span>
+                    </>
+                  ) : (
+                    row.value
+                  )}
+                </dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    isolation: isolate;
+    padding-block: var(--space-5) var(--space-8);
+    overflow: hidden;
+  }
+
+  @media (min-width: 900px) {
+    .hero {
+      padding-block: 96px 128px;
+    }
+  }
+
+  /* Background layer: always below the text. */
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(600px circle at 78% 40%, #00e5ff1f, transparent 70%),
+      radial-gradient(600px circle at 8% 100%, #ff2e9714, transparent 70%);
+  }
+
+  .hero-bg::before,
+  .hero-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    mask-image: radial-gradient(ellipse at 50% 40%, #000 30%, transparent 80%);
+  }
+
+  .hero-bg::before {
+    background-image:
+      linear-gradient(#ffffff08 1px, transparent 1px),
+      linear-gradient(90deg, #ffffff08 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  /* Optional static scanlines (brief section 4). Remove if they cause moiré. */
+  .hero-bg::after {
+    background: repeating-linear-gradient(to bottom, #ffffff05 0 1px, transparent 1px 3px);
+  }
+
+  .hero-grid {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  @media (min-width: 900px) {
+    .hero-grid {
+      grid-template-columns: 7fr 5fr;
+      align-items: center;
+      gap: var(--space-7);
+    }
+  }
+
+  .greeting-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin-bottom: var(--space-4);
+  }
+
+  .headshot {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    border: 1px solid var(--border);
+  }
+
+  @media (min-width: 900px) {
+    .headshot {
+      width: 88px;
+      height: 88px;
+    }
+  }
+
+  .greeting {
+    margin: 0;
+  }
+
+  .name {
+    position: relative;
+    margin-bottom: var(--space-2);
+  }
+
+  /* M1: one-shot glitch on pseudo-element copies. The real text never moves. */
+  @media (prefers-reduced-motion: no-preference) {
+    .name::before,
+    .name::after {
+      content: attr(data-text);
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0;
+      animation-duration: 300ms;
+      animation-delay: 150ms;
+      animation-timing-function: steps(3);
+      animation-fill-mode: both;
+    }
+
+    .name::before {
+      color: var(--cyan);
+      clip-path: inset(15% 0 55% 0);
+      animation-name: name-glitch-a;
+    }
+
+    .name::after {
+      color: var(--magenta);
+      clip-path: inset(58% 0 12% 0);
+      animation-name: name-glitch-b;
+    }
+  }
+
+  @keyframes name-glitch-a {
+    0% { opacity: 1; transform: translateX(-2px); }
+    50% { opacity: 1; transform: translateX(2px); }
+    100% { opacity: 0; transform: none; }
+  }
+
+  @keyframes name-glitch-b {
+    0% { opacity: 1; transform: translateX(2px); }
+    50% { opacity: 1; transform: translateX(-2px); }
+    100% { opacity: 0; transform: none; }
+  }
+
+  .role {
+    font-size: var(--fs-xl);
+    font-weight: 600;
+    line-height: 1.3;
+    margin-bottom: var(--space-2);
+  }
+
+  .value {
+    font-size: var(--fs-lg);
+    line-height: 1.5;
+    color: var(--text-muted);
+    margin: 0 0 var(--space-3);
+  }
+
+  .location {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin: 0 0 var(--space-5);
+    color: var(--text-muted);
+  }
+
+  .pin {
+    color: var(--cyan);
+    font-size: var(--fs-sm);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .label-short {
+    display: none;
+  }
+
+  @media (max-width: 420px) {
+    .label-long {
+      display: none;
+    }
+
+    .label-short {
+      display: inline;
+    }
+  }
+
+  /* whoami panel */
+  .whoami {
+    background: var(--raised);
+    border: 1px solid var(--border);
+    box-shadow: 0 0 48px #00e5ff1a;
+    overflow: hidden;
+  }
+
+  .titlebar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 32px;
+    padding-inline: var(--space-4);
+    border-bottom: 1px solid var(--border);
+    color: var(--text-subtle);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+  }
+
+  .dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .dots i {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border-strong);
+  }
+
+  .body {
+    padding: 14px var(--space-4);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    line-height: 1.6;
+  }
+
+  @media (min-width: 640px) {
+    .body {
+      font-size: var(--fs-mono);
+      padding: var(--space-4) var(--space-5);
+    }
+  }
+
+  .prompt {
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--space-2);
+    color: var(--text);
+  }
+
+  .dollar {
+    color: var(--green);
+    margin-right: 1ch;
+  }
+
+  .cmd {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 6ch;
+  }
+
+  .caret {
+    display: inline-block;
+    width: 0.6ch;
+    height: 1.1em;
+    margin-left: 2px;
+    background: var(--text);
+  }
+
+  /* M3 typing and M5 caret: decorative only, resting state is fully visible. */
+  @media (prefers-reduced-motion: no-preference) {
+    .cmd {
+      animation: type 400ms steps(6) 300ms backwards;
+    }
+
+    .caret {
+      animation: blink 1.06s steps(1) 700ms 3;
+    }
+  }
+
+  @keyframes type {
+    from { width: 0; }
+  }
+
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  dl {
+    margin: 0;
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: 8ch 1fr;
+    gap: var(--space-3);
+  }
+
+  dt {
+    color: var(--text-subtle);
+  }
+
+  dd {
+    margin: 0;
+    color: var(--text);
+  }
+
+  .short {
+    display: none;
+  }
+
+  /* On mobile the short form is shown; the long form stays readable for screen readers. */
+  @media (max-width: 639px) {
+    .long {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+
+    .short {
+      display: inline;
+    }
+  }
+</style>

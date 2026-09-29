@@ -1,0 +1,87 @@
+---
+// Generic flow of the two-way HR data sync. The customer and platforms stay anonymous.
+---
+
+<svg viewBox="0 0 480 270" role="img" aria-labelledby="sync-title sync-desc" class="diagram">
+  <title id="sync-title">Two-way data sync</title>
+  <desc id="sync-desc">
+    Platform A and platform B exchange working hours, absences and documents in both directions through a sync built
+    on their REST APIs.
+  </desc>
+  <defs>
+    <marker id="sync-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 8 4 0 8z" fill="#858ca1"></path>
+    </marker>
+  </defs>
+
+  <g class="box">
+    <rect x="8" y="70" width="112" height="100"></rect>
+    <text x="64" y="118">Platform</text>
+    <text x="64" y="140">A</text>
+    <rect x="360" y="70" width="112" height="100"></rect>
+    <text x="416" y="118">Platform</text>
+    <text x="416" y="140">B</text>
+  </g>
+
+  <g class="box highlight">
+    <rect x="166" y="60" width="148" height="120"></rect>
+    <text x="240" y="114">Two-way sync</text>
+    <text x="240" y="138" class="small">REST APIs</text>
+  </g>
+
+  <path class="flow" d="M122 120h40" marker-start="url(#sync-arrow)" marker-end="url(#sync-arrow)"></path>
+  <path class="flow" d="M318 120h38" marker-start="url(#sync-arrow)" marker-end="url(#sync-arrow)"></path>
+
+  <g class="labels">
+    <text x="240" y="220">Working hours · Absences ·</text>
+    <text x="240" y="244">Documents</text>
+  </g>
+</svg>
+
+<style>
+  .diagram {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  .box rect {
+    fill: var(--surface);
+    stroke: var(--border-strong);
+    stroke-width: 1;
+  }
+
+  .box text {
+    fill: var(--text);
+    font-family: var(--font-body);
+    font-size: 17px;
+    text-anchor: middle;
+  }
+
+  .box text.small {
+    font-family: var(--font-mono);
+    font-size: 15px;
+  }
+
+  .highlight rect {
+    stroke: var(--cyan);
+    fill: #132c37;
+  }
+
+  .highlight text {
+    fill: var(--cyan);
+  }
+
+  .flow {
+    stroke: var(--text-subtle);
+    stroke-width: 1.5;
+    fill: none;
+  }
+
+  .labels text {
+    fill: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 15px;
+    text-anchor: middle;
+  }
+</style>

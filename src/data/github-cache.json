@@ -1,0 +1,32 @@
+[
+  {
+    "name": "ffhs-skills",
+    "html_url": "https://github.com/DiogoCaraca/ffhs-skills",
+    "description": "Claude-Code-Skills fuer das Studium an der FFHS: Obsidian-Vault aus Modulplan bauen und PVA-Vorbereitungsauftraege aufarbeiten",
+    "language": "Python",
+    "stargazers_count": 0,
+    "pushed_at": "2026-09-26T12:00:14Z",
+    "fork": false,
+    "archived": false
+  },
+  {
+    "name": "Kinobuchungssystem",
+    "html_url": "https://github.com/DiogoCaraca/Kinobuchungssystem",
+    "description": null,
+    "language": "Java",
+    "stargazers_count": 0,
+    "pushed_at": "2019-05-10T11:59:52Z",
+    "fork": false,
+    "archived": false
+  },
+  {
+    "name": "Webpage_TestIPA",
+    "html_url": "https://github.com/DiogoCaraca/Webpage_TestIPA",
+    "description": null,
+    "language": "TypeScript",
+    "stargazers_count": 0,
+    "pushed_at": "2020-11-17T13:36:05Z",
+    "fork": false,
+    "archived": false
+  }
+]

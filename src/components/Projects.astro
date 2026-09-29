@@ -1,0 +1,27 @@
+---
+import { getCollection } from 'astro:content';
+import ProjectCard from './ProjectCard.astro';
+import { useTranslations } from '../i18n';
+
+const t = useTranslations(Astro.currentLocale);
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<section class="section" id="projects" aria-labelledby="projects-heading">
+  <div class="container">
+    <div class="section-heading">
+      <span class="index" aria-hidden="true">// 03</span>
+      <h2 id="projects-heading">{t.projects.heading}</h2>
+    </div>
+    <div class="list">
+      {projects.map((project, i) => <ProjectCard project={project} index={i + 1} />)}
+    </div>
+  </div>
+</section>
+
+<style>
+  .list {
+    display: grid;
+    gap: var(--space-5);
+  }
+</style>

@@ -1,0 +1,92 @@
+---
+// Generic architecture of the ForstControl accounting adapters. No real system names.
+// The highlighted element is the part Diogo designed and built.
+---
+
+<svg viewBox="0 0 480 270" role="img" aria-labelledby="adapters-title adapters-desc" class="diagram">
+  <title id="adapters-title">Accounting adapter architecture</title>
+  <desc id="adapters-desc">
+    ForstControl's core talks to one accounting contract. Behind it, one adapter per finance system connects to
+    finance systems A, B and C.
+  </desc>
+  <defs>
+    <marker id="adapters-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 8 4 0 8z" fill="#858ca1"></path>
+    </marker>
+  </defs>
+
+  <g class="box">
+    <rect x="130" y="8" width="220" height="42"></rect>
+    <text x="240" y="35">ForstControl core</text>
+  </g>
+
+  <path class="flow" d="M240 50v24" marker-end="url(#adapters-arrow)"></path>
+
+  <g class="box highlight">
+    <rect x="40" y="78" width="400" height="42"></rect>
+    <text x="240" y="105">Accounting contract</text>
+    <rect x="40" y="146" width="124" height="42"></rect>
+    <text x="102" y="173">Adapter A</text>
+    <rect x="178" y="146" width="124" height="42"></rect>
+    <text x="240" y="173">Adapter B</text>
+    <rect x="316" y="146" width="124" height="42"></rect>
+    <text x="378" y="173">Adapter C</text>
+  </g>
+
+  <path class="flow" d="M102 120v22" marker-end="url(#adapters-arrow)"></path>
+  <path class="flow" d="M240 120v22" marker-end="url(#adapters-arrow)"></path>
+  <path class="flow" d="M378 120v22" marker-end="url(#adapters-arrow)"></path>
+  <path class="flow" d="M102 188v28" marker-end="url(#adapters-arrow)"></path>
+  <path class="flow" d="M240 188v28" marker-end="url(#adapters-arrow)"></path>
+  <path class="flow" d="M378 188v28" marker-end="url(#adapters-arrow)"></path>
+
+  <g class="box">
+    <rect x="40" y="220" width="124" height="40"></rect>
+    <text x="102" y="246" class="small">Finance A</text>
+    <rect x="178" y="220" width="124" height="40"></rect>
+    <text x="240" y="246" class="small">Finance B</text>
+    <rect x="316" y="220" width="124" height="40"></rect>
+    <text x="378" y="246" class="small">Finance C</text>
+  </g>
+</svg>
+
+<style>
+  .diagram {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  .box rect {
+    fill: var(--surface);
+    stroke: var(--border-strong);
+    stroke-width: 1;
+  }
+
+  .box text {
+    fill: var(--text);
+    font-family: var(--font-body);
+    font-size: 17px;
+    text-anchor: middle;
+  }
+
+  .box text.small {
+    font-size: 15px;
+    fill: var(--text-muted);
+  }
+
+  .highlight rect {
+    stroke: var(--cyan);
+    fill: #132c37;
+  }
+
+  .highlight text {
+    fill: var(--cyan);
+  }
+
+  .flow {
+    stroke: var(--text-subtle);
+    stroke-width: 1.5;
+    fill: none;
+  }
+</style>

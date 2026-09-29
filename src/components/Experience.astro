@@ -1,0 +1,186 @@
+---
+import { useTranslations, formatMonth } from '../i18n';
+
+const t = useTranslations(Astro.currentLocale);
+const locale = Astro.currentLocale ?? 'en';
+const e = t.experience;
+
+function range(entry: (typeof e.entries)[number]) {
+  const start = formatMonth(entry.start, locale);
+  if (entry.type === 'cert') return start;
+  const end = 'end' in entry ? entry.end : undefined;
+  if (end === null) return `${start} → ${e.now}`;
+  if (end === 'in-progress') return `${start} → ${e.inProgress}`;
+  return end ? `${start} → ${formatMonth(end, locale)}` : start;
+}
+---
+
+<section class="section" id="experience" aria-labelledby="experience-heading">
+  <div class="container">
+    <div class="section-heading">
+      <span class="index" aria-hidden="true">// 05</span>
+      <h2 id="experience-heading">{e.heading}</h2>
+    </div>
+
+    <ol class="timeline">
+      {
+        e.entries.map((entry) => {
+          const current = 'current' in entry && entry.current;
+          return (
+            <li class:list={['entry', `type-${entry.type}`, { current }]}>
+              <p class="date index">
+                <time datetime={entry.start}>{range(entry)}</time>
+              </p>
+              <span class="node" aria-hidden="true" />
+              <div class="content">
+                <p class="title">
+                  <span class="type index">{e.types[entry.type]}</span>
+                  <strong>{entry.title}</strong>
+                  <span class="org"> · {entry.org}</span>
+                  {'chips' in entry &&
+                    entry.chips?.map((chip) => <span class="chip index">{chip}</span>)}
+                  {current && <span class="chip chip-now index">{e.now}</span>}
+                </p>
+                {'bullets' in entry && entry.bullets && (
+                  <ul class="bullets">
+                    {entry.bullets.map((bullet) => <li>{bullet}</li>)}
+                  </ul>
+                )}
+                {'link' in entry && entry.link && (
+                  <p class="more">
+                    <a href={entry.link.href}>{entry.link.label} →</a>
+                  </p>
+                )}
+              </div>
+            </li>
+          );
+        })
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .timeline {
+    list-style: none;
+    position: relative;
+  }
+
+  .entry {
+    position: relative;
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    grid-template-areas:
+      'node date'
+      'node content';
+    column-gap: var(--space-3);
+    padding-bottom: var(--space-6);
+  }
+
+  @media (min-width: 900px) {
+    .entry {
+      grid-template-columns: 160px 24px 1fr;
+      grid-template-areas: 'date node content';
+    }
+  }
+
+  /* The rail */
+  .entry::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    bottom: 0;
+    left: 11px;
+    width: 2px;
+    background: var(--border-strong);
+  }
+
+  @media (min-width: 900px) {
+    .entry::before {
+      left: calc(160px + var(--space-3) + 11px);
+    }
+  }
+
+  .entry:last-child::before {
+    display: none;
+  }
+
+  .date {
+    grid-area: date;
+    margin: 0;
+  }
+
+  .node {
+    grid-area: node;
+    position: relative;
+    z-index: 1;
+    justify-self: center;
+    width: 12px;
+    height: 12px;
+    margin-top: 6px;
+    border: 2px solid var(--text-muted);
+    border-radius: 50%;
+    background: var(--bg);
+  }
+
+  .type-education .node,
+  .type-cert .node {
+    border-radius: 0;
+    transform: rotate(45deg);
+  }
+
+  .type-education .node {
+    background: var(--text-muted);
+  }
+
+  .current .node {
+    border-color: var(--green);
+    background: var(--green);
+    box-shadow: 0 0 12px #3dffa266;
+  }
+
+  .content {
+    grid-area: content;
+  }
+
+  .title {
+    margin: 0;
+    max-width: none;
+  }
+
+  .type {
+    margin-right: var(--space-2);
+  }
+
+  .org {
+    color: var(--text-muted);
+  }
+
+  .chip {
+    display: inline-block;
+    margin-left: var(--space-2);
+    padding: 0 var(--space-2);
+    border: 1px solid var(--border-strong);
+    color: var(--text-muted);
+  }
+
+  .chip-now {
+    border-color: #3dffa266;
+    color: var(--green);
+  }
+
+  .bullets {
+    margin-top: var(--space-2);
+    padding-left: 1.1em;
+    color: var(--text-muted);
+  }
+
+  .bullets li + li {
+    margin-top: var(--space-1);
+  }
+
+  .more {
+    margin-top: var(--space-2);
+    font-size: var(--fs-sm);
+  }
+</style>

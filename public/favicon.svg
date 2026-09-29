@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <path d="M12 0H64V52L52 64H0V12Z" fill="#0e1016"/>
+  <text x="32" y="42" text-anchor="middle" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="26" font-weight="700" fill="#e6e8f0">dc<tspan fill="#00e5ff">_</tspan></text>
+</svg>

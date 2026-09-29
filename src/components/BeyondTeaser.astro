@@ -1,0 +1,127 @@
+---
+import { Image } from 'astro:assets';
+import { useTranslations } from '../i18n';
+import { getPhoto } from '../lib/photos';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<section class="section" id="beyond" aria-labelledby="beyond-heading">
+  <div class="container">
+    <div class="section-heading">
+      <span class="index" aria-hidden="true">// 06</span>
+      <h2 id="beyond-heading">{t.teaser.heading}</h2>
+    </div>
+    <p class="intro">{t.teaser.intro}</p>
+
+    <ul class="tiles">
+      {
+        t.teaser.tiles.map((tile) => {
+          const photo = 'photo' in tile ? getPhoto(tile.photo) : undefined;
+          return (
+            <li>
+              <a class="tile bevel" href={`/beyond#${tile.id}`}>
+                {photo ? (
+                  <Image src={photo} alt="" width={400} height={400} fit="cover" class="photo" />
+                ) : (
+                  <span class="glyph" aria-hidden="true">{tile.glyph}</span>
+                )}
+                <span class="title">{tile.title}</span>
+                <span class="text">{tile.text}</span>
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+
+    <a class="btn btn-primary more" href="/beyond">
+      {t.teaser.more} <span class="arrow" aria-hidden="true">→</span>
+    </a>
+  </div>
+</section>
+
+<style>
+  #beyond {
+    --accent: var(--magenta);
+    --accent-text: var(--magenta-text);
+    --accent-soft: var(--magenta-soft);
+    --accent-glow: #ff2e9733;
+  }
+
+  .intro {
+    margin-bottom: var(--space-5);
+    color: var(--text-muted);
+  }
+
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+    list-style: none;
+    margin-bottom: var(--space-6);
+  }
+
+  @media (min-width: 900px) {
+    .tiles {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .tile {
+    display: grid;
+    align-content: start;
+    gap: var(--space-2);
+    height: 100%;
+    padding: var(--space-3);
+    background: var(--surface);
+    border: 1px solid var(--magenta-soft);
+    color: var(--text);
+    text-decoration: none;
+    transition:
+      box-shadow 180ms ease-out,
+      border-color 180ms ease-out,
+      transform 180ms ease-out;
+  }
+
+  @media (hover: hover) {
+    .tile:hover {
+      border-color: var(--magenta);
+      box-shadow: 0 0 32px #ff2e9733;
+      transform: translateY(-2px);
+    }
+  }
+
+  .photo,
+  .glyph {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+  }
+
+  .glyph {
+    display: grid;
+    place-items: center;
+    padding: var(--space-2);
+    background: var(--tag-beyond-bg);
+    color: var(--magenta-text);
+    font-family: var(--font-display);
+    font-size: clamp(1.125rem, 0.8rem + 1.4vw, 2rem);
+    font-weight: 600;
+    text-align: center;
+    overflow-wrap: anywhere;
+  }
+
+  .title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--fs-lg);
+    color: var(--magenta-text);
+  }
+
+  .text {
+    color: var(--text-muted);
+    font-size: var(--fs-sm);
+    line-height: 1.5;
+  }
+</style>

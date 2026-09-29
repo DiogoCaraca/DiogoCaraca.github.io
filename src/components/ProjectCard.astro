@@ -1,0 +1,325 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import AdaptersDiagram from './diagrams/AdaptersDiagram.astro';
+import SyncDiagram from './diagrams/SyncDiagram.astro';
+import { useTranslations } from '../i18n';
+import { getProjectImage } from '../lib/photos';
+import { inlineMarkdown } from '../lib/inline-markdown';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  index: number;
+}
+
+const { project, index } = Astro.props;
+const { Content } = await render(project);
+const data = project.data;
+const t = useTranslations(Astro.currentLocale);
+const number = String(index).padStart(2, '0');
+const headingId = `project-${project.id}`;
+const image = data.visual === 'image' && data.image ? getProjectImage(data.image) : undefined;
+---
+
+<article class="card bevel" aria-labelledby={headingId}>
+  <header class="head">
+    <p class="index">{number} · {data.roleLabel}</p>
+    <h3 id={headingId}>{data.title}</h3>
+    <p class="tagline">{data.tagline}</p>
+  </header>
+
+  <div class="body">
+    <div class="text">
+      <div class="story"><Content /></div>
+      {data.context && <p class="context">{data.context}</p>}
+      {data.award && <p class="award"><span class="award-mark" aria-hidden="true">★</span> {data.award}</p>}
+
+      <dl class="meta">
+        <div>
+          <dt class="index">{t.projects.diogosPart}</dt>
+          <dd>
+            <ul class="tags">{data.diogosPart.map((part) => <li class="tag tag-daily bevel-sm">{part}</li>)}</ul>
+          </dd>
+        </div>
+        <div>
+          <dt class="index">{t.projects.stack}</dt>
+          <dd>
+            <ul class="tags">{data.stack.map((item) => <li class="tag bevel-sm">{item}</li>)}</ul>
+          </dd>
+        </div>
+      </dl>
+    </div>
+
+    {
+      data.visual !== 'none' && (
+        <figure class="visual bevel">
+          {data.visual === 'adapters-diagram' && <AdaptersDiagram />}
+          {data.visual === 'sync-diagram' && <SyncDiagram />}
+          {data.visual === 'ffhs-terminal' && (
+            <div class="terminal" role="img" aria-label="Terminal: installing the ffhs-studium plugin with Claude Code">
+              <p><span class="dollar">$</span> claude plugin marketplace add DiogoCaraca/ffhs-skills</p>
+              <p><span class="dollar">$</span> claude plugin install ffhs-studium@ffhs-skills</p>
+              <p class="out">✓ Skills (2): obsidian-modul-vault, pva-vorbereitung</p>
+              <p><span class="dollar">$</span> /ffhs-studium:obsidian-modul-vault</p>
+              <p class="out">→ semester vault ready in Obsidian</p>
+            </div>
+          )}
+          {image && <Image src={image} alt={`Screenshot: ${data.title}`} widths={[480, 800, 1200]} sizes="(min-width: 900px) 440px, 100vw" />}
+        </figure>
+      )
+    }
+  </div>
+
+  {
+    data.timeline && (
+      <ol class="timeline" aria-label={`${t.projects.timelineLabel}: ${data.timeline.total}`}>
+        {data.timeline.phases.map((phase) => (
+          <li>
+            <span class="phase index">{phase}</span>
+            <span class="bar" aria-hidden="true" />
+          </li>
+        ))}
+        <li class="total index" aria-hidden="true">{data.timeline.total}</li>
+      </ol>
+    )
+  }
+
+  {
+    (data.badge || data.links.length > 0) && (
+      <footer class="links">
+        {data.badge && <span class="badge index">◇ {data.badge}</span>}
+        {data.links.map((link) => (
+          <a class="btn btn-secondary" href={link.url} aria-label={`${link.label}: ${link.description}`}>
+            {link.label}
+            <span class="arrow" aria-hidden="true">↗</span>
+          </a>
+        ))}
+      </footer>
+    )
+  }
+
+  {
+    data.caseStudy && (
+      <details class="how">
+        <summary>{t.projects.howItWorks}</summary>
+        <div class="how-body" set:html={inlineMarkdown(data.caseStudy)} />
+      </details>
+    )
+  }
+</article>
+
+<style>
+  .card {
+    display: grid;
+    gap: var(--space-5);
+    padding: var(--space-4);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    transition:
+      border-color 180ms ease-out,
+      background-color 180ms ease-out;
+  }
+
+  @media (min-width: 640px) {
+    .card {
+      padding: var(--space-5);
+    }
+  }
+
+  @media (hover: hover) {
+    .card:hover {
+      border-color: var(--cyan-soft);
+      background: var(--raised);
+    }
+  }
+
+  .head .index {
+    margin-bottom: var(--space-2);
+  }
+
+  .tagline {
+    margin-top: var(--space-2);
+    color: var(--text-muted);
+  }
+
+  .body {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  @media (min-width: 900px) {
+    .body {
+      grid-template-columns: 7fr 5fr;
+      align-items: start;
+    }
+  }
+
+  /* Mobile order: visual before the story. */
+  @media (max-width: 899px) {
+    .visual {
+      order: -1;
+    }
+  }
+
+  .story :global(p) {
+    margin: 0;
+  }
+
+  .context,
+  .award {
+    margin-top: var(--space-3);
+    color: var(--text-muted);
+    font-size: var(--fs-sm);
+  }
+
+  .award-mark {
+    color: var(--yellow);
+  }
+
+  .meta {
+    display: grid;
+    gap: var(--space-3);
+    margin: var(--space-5) 0 0;
+  }
+
+  .meta > div {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  @media (min-width: 640px) {
+    .meta > div {
+      grid-template-columns: 14ch 1fr;
+      align-items: baseline;
+    }
+  }
+
+  .meta dd {
+    margin: 0;
+  }
+
+  .visual {
+    margin: 0;
+    padding: var(--space-3);
+    background: var(--raised);
+    border: 1px solid var(--border);
+  }
+
+  .terminal {
+    display: grid;
+    align-content: center;
+    gap: var(--space-2);
+    aspect-ratio: 16 / 9;
+    padding: var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+
+  .terminal p {
+    margin: 0;
+  }
+
+  .terminal .dollar {
+    color: var(--green);
+  }
+
+  .terminal .out {
+    color: var(--text-muted);
+  }
+
+  .timeline {
+    display: grid;
+    gap: var(--space-2);
+    list-style: none;
+  }
+
+  .timeline li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .timeline .bar {
+    flex: 1;
+    height: 6px;
+    background: #00e5ff99;
+  }
+
+  .timeline .phase {
+    min-width: 13ch;
+  }
+
+  @media (min-width: 640px) {
+    .timeline {
+      grid-auto-flow: column;
+      grid-auto-columns: 1fr;
+      align-items: end;
+    }
+
+    .timeline li {
+      flex-direction: column;
+      align-items: stretch;
+      gap: var(--space-2);
+    }
+
+    .timeline .bar {
+      flex: none;
+    }
+
+    .timeline .phase {
+      min-width: 0;
+    }
+
+    .timeline .total {
+      align-self: end;
+      white-space: nowrap;
+    }
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3) var(--space-5);
+  }
+
+  .how summary {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 44px;
+    color: var(--cyan);
+    font-family: var(--font-mono);
+    font-size: var(--fs-sm);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .how summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .how summary::before {
+    content: '▸';
+    display: inline-block;
+    transition: transform 150ms ease-out;
+  }
+
+  .how[open] summary::before {
+    transform: rotate(90deg);
+  }
+
+  .how-body {
+    margin-top: var(--space-2);
+    padding: var(--space-4);
+    background: var(--raised);
+    border-left: 2px solid var(--cyan);
+  }
+
+  .how-body :global(strong) {
+    color: var(--text);
+    font-weight: 600;
+  }
+</style>

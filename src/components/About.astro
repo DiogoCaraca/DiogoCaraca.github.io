@@ -1,0 +1,73 @@
+---
+import { useTranslations } from '../i18n';
+
+const t = useTranslations(Astro.currentLocale);
+const toneClass: Record<string, string> = { daily: 'tag-daily', exploring: 'tag-exploring', neutral: '' };
+---
+
+<section class="section" id="about" aria-labelledby="about-heading">
+  <div class="container">
+    <div class="section-heading">
+      <span class="index" aria-hidden="true">// 02</span>
+      <h2 id="about-heading">{t.about.heading}</h2>
+    </div>
+
+    <div class="bio">
+      {t.about.paragraphs.map((text) => <p>{text}</p>)}
+    </div>
+
+    <dl class="skills">
+      {
+        t.about.skillGroups.map((group) => (
+          <div class="group">
+            <dt class="index">{group.label}</dt>
+            <dd>
+              <ul class="tags">
+                {group.items.map((item) => (
+                  <li class:list={['tag', 'bevel-sm', toneClass[group.tone]]}>{item}</li>
+                ))}
+              </ul>
+            </dd>
+          </div>
+        ))
+      }
+      <div class="group">
+        <dt class="index">{t.about.languagesLabel}</dt>
+        <dd class="languages">{t.about.languages}</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<style>
+  .bio {
+    margin-bottom: var(--space-7);
+  }
+
+  .skills {
+    display: grid;
+    gap: var(--space-4);
+    margin: 0;
+  }
+
+  .group {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  @media (min-width: 640px) {
+    .group {
+      grid-template-columns: 17ch 1fr;
+      align-items: baseline;
+      gap: var(--space-4);
+    }
+  }
+
+  dd {
+    margin: 0;
+  }
+
+  .languages {
+    color: var(--text-muted);
+  }
+</style>

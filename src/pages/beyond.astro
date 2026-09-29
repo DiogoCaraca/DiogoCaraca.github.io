@@ -1,0 +1,213 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import { useTranslations } from '../i18n';
+import { getPhoto } from '../lib/photos';
+
+const t = useTranslations(Astro.currentLocale);
+const b = t.beyond;
+const photos = {
+  together: getPhoto('together'),
+  roots: getPhoto('roots'),
+  boxing: getPhoto('boxing'),
+  dog: getPhoto('dog'),
+  desk: getPhoto('desk'),
+};
+---
+
+<Base title={t.meta.beyondTitle} description={t.meta.beyondDescription} pageClass="page-beyond" footerUpdated={b.updated}>
+  <section class="section intro" id="intro" aria-labelledby="beyond-heading">
+    <div class="container">
+      <p><a href="/" class="back">← {b.back}</a></p>
+      <p class="index prompt" aria-hidden="true">{b.prompt}</p>
+      <h1 id="beyond-heading">{b.heading}</h1>
+      <div class="lead">{b.intro.map((text) => <p>{text}</p>)}</div>
+      {photos.together && <Image src={photos.together} alt="" widths={[640, 1120]} sizes="(min-width: 1120px) 1056px, 100vw" class="wide bevel" />}
+    </div>
+  </section>
+
+  <section class="grid-section" aria-label={b.heading}>
+    <div class="container bento">
+      <article class="block span-3" id="roots" aria-labelledby="roots-h">
+        {photos.roots ? <Image src={photos.roots} alt="" widths={[480, 800]} sizes="(min-width: 900px) 520px, 100vw" class="photo bevel" /> : <p class="glyph" aria-hidden="true">{b.blocks.roots.glyph}</p>}
+        <h2 id="roots-h">{b.blocks.roots.heading}</h2>
+        {b.blocks.roots.text.map((text) => <p>{text}</p>)}
+      </article>
+
+      <article class="block span-3" id="boxing" aria-labelledby="boxing-h">
+        {photos.boxing && <Image src={photos.boxing} alt={b.blocks.boxing.photoAlt} widths={[480, 800]} sizes="(min-width: 900px) 520px, 100vw" class="photo bevel" />}
+        <h2 id="boxing-h">{b.blocks.boxing.heading}</h2>
+        {b.blocks.boxing.text.map((text) => <p>{text}</p>)}
+      </article>
+
+      <article class="block span-2" id="dog" aria-labelledby="dog-h">
+        {photos.dog && <Image src={photos.dog} alt={b.blocks.dog.photoAlt} width={600} height={600} fit="cover" class="photo square bevel" />}
+        <h2 id="dog-h">{b.blocks.dog.heading}</h2>
+        {b.blocks.dog.text.map((text) => <p>{text}</p>)}
+      </article>
+
+      <article class="block span-4" id="work-study" aria-labelledby="work-study-h">
+        {photos.desk && <Image src={photos.desk} alt="" widths={[480, 800]} sizes="(min-width: 900px) 700px, 100vw" class="photo bevel" />}
+        <h2 id="work-study-h">{b.blocks.workStudy.heading}</h2>
+        {b.blocks.workStudy.text.map((text) => <p>{text}</p>)}
+        <ul class="tags">
+          <li class="tag tag-beyond bevel-sm">80% software engineer</li>
+          <li class="tag tag-beyond bevel-sm">BSc Computer Science · part-time</li>
+        </ul>
+      </article>
+
+      <article class="block span-3" id="civilian-service" aria-labelledby="civilian-h">
+        <h2 id="civilian-h">{b.blocks.civilianService.heading}</h2>
+        {b.blocks.civilianService.text.map((text) => <p>{text}</p>)}
+      </article>
+
+      <article class="block span-3 terminal" id="exploring" aria-labelledby="exploring-h">
+        <h2 id="exploring-h">{b.blocks.exploring.heading}</h2>
+        <p class="mono prompt-line" aria-hidden="true"><span class="dollar">$</span> {b.blocks.exploring.prompt.replace('$ ', '')}</p>
+        <dl>
+          {
+            b.blocks.exploring.items.map((item) => (
+              <div>
+                <dt class="mono">{item.name}</dt>
+                <dd>{item.text}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </article>
+    </div>
+  </section>
+
+  <div class="container back-row">
+    <a class="btn btn-primary" href="/">← {b.backButton}</a>
+  </div>
+</Base>
+
+<style>
+  .intro {
+    padding-bottom: var(--space-7);
+  }
+
+  .back {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: var(--fs-sm);
+  }
+
+  .prompt {
+    margin: var(--space-4) 0 var(--space-2);
+  }
+
+  h1 {
+    color: var(--magenta-text);
+    margin-bottom: var(--space-5);
+  }
+
+  .lead {
+    font-size: var(--fs-lg);
+    line-height: 1.5;
+  }
+
+  .wide {
+    width: 100%;
+    margin-top: var(--space-6);
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    border: 1px solid var(--border);
+  }
+
+  .grid-section {
+    padding-bottom: var(--space-7);
+  }
+
+  .bento {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  @media (min-width: 900px) {
+    .bento {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: var(--space-5);
+    }
+
+    .span-2 { grid-column: span 2; }
+    .span-3 { grid-column: span 3; }
+    .span-4 { grid-column: span 4; }
+  }
+
+  .block {
+    display: grid;
+    align-content: start;
+    gap: var(--space-3);
+    padding: var(--space-5);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    scroll-margin-top: calc(var(--bar-height) + 16px);
+  }
+
+  .block h2 {
+    font-size: var(--fs-xl);
+    color: var(--magenta-text);
+  }
+
+  .block p + p {
+    margin-top: 0;
+  }
+
+  .photo {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    border: 1px solid var(--border);
+  }
+
+  .photo.square {
+    aspect-ratio: 1;
+  }
+
+  .glyph {
+    display: grid;
+    place-items: center;
+    min-height: 120px;
+    background: var(--tag-beyond-bg);
+    color: var(--magenta-text);
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: 600;
+  }
+
+  .terminal {
+    background: var(--raised);
+    font-size: var(--fs-sm);
+  }
+
+  .prompt-line {
+    margin: 0;
+  }
+
+  .dollar {
+    color: var(--green);
+  }
+
+  .terminal dl {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0;
+  }
+
+  .terminal dt {
+    color: var(--violet);
+    overflow-wrap: anywhere;
+  }
+
+  .terminal dd {
+    margin: 0;
+    color: var(--text-muted);
+  }
+
+  .back-row {
+    padding-bottom: var(--space-8);
+  }
+</style>

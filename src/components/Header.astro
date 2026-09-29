@@ -1,0 +1,213 @@
+---
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import { useTranslations } from '../i18n';
+
+const t = useTranslations(Astro.currentLocale);
+const onHome = Astro.url.pathname === '/' || Astro.url.pathname === '/index.html';
+const base = onHome ? '' : '/';
+const links = [
+  { href: `${base}#about`, label: t.nav.about },
+  { href: `${base}#projects`, label: t.nav.projects },
+  { href: `${base}#experience`, label: t.nav.experience },
+  { href: '/beyond', label: t.nav.beyond },
+];
+---
+
+<header class="top-bar">
+  <div class="container bar">
+    <a class="wordmark" href="/" data-text="dc_"
+      ><span aria-hidden="true">dc<span class="underscore">_</span></span><span class="sr-only">{t.a11y.home}</span></a
+    >
+
+    <nav aria-label={t.a11y.mainNav} class="nav-desktop">
+      <ul>
+        {links.map((link) => <li><a href={link.href}>{link.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <div class="bar-end">
+      <LanguageSwitcher />
+      <details class="menu">
+        <summary>{t.a11y.menu}</summary>
+        <nav aria-label={t.a11y.mainNav}>
+          <ul>
+            {links.map((link) => <li><a href={link.href}>{link.label}</a></li>)}
+          </ul>
+        </nav>
+      </details>
+    </div>
+  </div>
+</header>
+
+<script>
+  // Optional enhancement: close the mobile menu after choosing a link.
+  document.querySelectorAll<HTMLDetailsElement>('details.menu').forEach((menu) => {
+    menu.addEventListener('click', (event) => {
+      if ((event.target as HTMLElement).closest('a')) menu.open = false;
+    });
+  });
+</script>
+
+<style>
+  .top-bar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    height: var(--bar-height);
+    background: #151821cc;
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    height: 100%;
+  }
+
+  .wordmark {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 18px;
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .wordmark .underscore {
+    color: var(--cyan);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .wordmark:hover::before,
+    .wordmark:focus-visible::before,
+    .wordmark:hover::after,
+    .wordmark:focus-visible::after {
+      content: attr(data-text);
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      pointer-events: none;
+    }
+
+    .wordmark:hover::before,
+    .wordmark:focus-visible::before {
+      color: var(--cyan);
+      clip-path: inset(10% 0 55% 0);
+      animation: glitch-a 240ms steps(2) both;
+    }
+
+    .wordmark:hover::after,
+    .wordmark:focus-visible::after {
+      color: var(--magenta);
+      clip-path: inset(60% 0 5% 0);
+      animation: glitch-b 240ms steps(2) both;
+    }
+  }
+
+  .nav-desktop {
+    display: none;
+  }
+
+  .nav-desktop ul,
+  .menu ul {
+    list-style: none;
+  }
+
+  .nav-desktop ul {
+    display: flex;
+    gap: var(--space-5);
+  }
+
+  .nav-desktop a,
+  .menu a {
+    color: var(--text-muted);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .nav-desktop a:hover,
+  .menu a:hover {
+    color: var(--text);
+  }
+
+  .bar-end {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .menu summary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    padding-inline: var(--space-3);
+    border: 1px solid var(--border-strong);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .menu summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .menu[open] summary {
+    border-color: var(--cyan);
+  }
+
+  .menu nav {
+    position: absolute;
+    top: var(--bar-height);
+    left: 0;
+    right: 0;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .menu ul {
+    max-width: var(--container);
+    margin-inline: auto;
+    padding: var(--space-2) var(--gutter) var(--space-4);
+  }
+
+  .menu a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  @media (min-width: 900px) {
+    .nav-desktop {
+      display: block;
+      margin-left: auto;
+    }
+
+    .menu {
+      display: none;
+    }
+  }
+
+  @keyframes glitch-a {
+    0% { transform: translate(-2px, 0); }
+    50% { transform: translate(2px, 0); }
+    100% { transform: translate(0, 0); opacity: 0; }
+  }
+
+  @keyframes glitch-b {
+    0% { transform: translate(2px, 0); }
+    50% { transform: translate(-2px, 0); }
+    100% { transform: translate(0, 0); opacity: 0; }
+  }
+</style>
