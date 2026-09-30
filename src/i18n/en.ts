@@ -181,7 +181,7 @@ export const en = {
     more: 'More beyond code',
     tiles: [
       { id: 'boxing', title: 'Boxing', text: 'How I switch off, and what the ring teaches.', glyph: '1 · 2', photo: 'boxing' },
-      { id: 'dog', title: 'The dog', text: 'Part of the family.', glyph: 'woof', photo: 'dog' },
+      { id: 'dog', title: 'Daisy', text: 'Our dog, and part of the family.', glyph: 'woof', photo: 'dog' },
       { id: 'roots', title: 'Roots', text: 'Swiss with Portuguese roots, two native languages.', glyph: 'CH ⇄ PT' },
       { id: 'exploring', title: 'Exploring', text: 'Cloud, Kubernetes and AI-assisted development.', glyph: '$ ls ~/learning' },
     ],
@@ -211,9 +211,9 @@ export const en = {
         ],
       },
       dog: {
-        heading: 'The dog',
-        photoAlt: "Diogo's dog",
-        text: ['Our dog is part of the family, and the best reason to close the laptop.'],
+        heading: 'Daisy',
+        photoAlt: "Daisy, Diogo's dog",
+        text: ['Daisy, our dog, is part of the family, and the best reason to close the laptop.'],
       },
       workStudy: {
         heading: 'Working and studying',
