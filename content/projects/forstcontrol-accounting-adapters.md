@@ -1,9 +1,8 @@
 ---
 order: 1
-title: "ForstControl accounting adapters"
+title: "One core, many finance systems"
 roleLabel: "Architecture & build"
-tagline: "One core, many finance systems: a plugin architecture that brings accounting into ForstControl."
-context: "ForstControl 3.0: forestry and accounting software with several million records and several thousand users."
+tagline: "A ports-and-adapters architecture that brings accounting into ForstControl."
 diogosPart: [Architecture, Build]
 stack: [Laravel, PHP, MySQL, Vue]
 badge: "Closed source · siabit AG"

@@ -8,7 +8,7 @@ experience:
     end: null
     workload: "80%"
     highlights:
-      - "Full-stack development on ForstControl 3.0, forestry and accounting software with several million records and several thousand users."
+      - "Full-stack development on ForstControl 3.0, an ERP system for the forestry sector with several million records and several thousand users."
       - "Designed and built a plugin/adapter architecture in Laravel that connects different financial accounting systems. Accounting now runs directly in ForstControl, removing duplicate reconciliation across two systems."
       - "Owned the data exchange between two platforms (working hours, absences, documents) for a major customer, from requirements and estimation to go-live in about three months."
       - "Temporarily took over requirements elicitation for the team."

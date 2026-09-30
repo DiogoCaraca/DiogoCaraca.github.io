@@ -21,7 +21,7 @@ const headingId = `project-${project.id}`;
 const image = data.visual === 'image' && data.image ? getProjectImage(data.image) : undefined;
 ---
 
-<article class="card bevel" aria-labelledby={headingId}>
+<article class="card bevel" id={project.id} aria-labelledby={headingId}>
   <header class="head">
     <p class="index">{number} · {data.roleLabel}</p>
     <h3 id={headingId}>{data.title}</h3>
@@ -30,10 +30,6 @@ const image = data.visual === 'image' && data.image ? getProjectImage(data.image
 
   <div class="body">
     <div class="text">
-      <div class="story"><Content /></div>
-      {data.context && <p class="context">{data.context}</p>}
-      {data.award && <p class="award"><span class="award-mark" aria-hidden="true">★</span> {data.award}</p>}
-
       <dl class="meta">
         <div>
           <dt class="index">{t.projects.diogosPart}</dt>
@@ -48,6 +44,9 @@ const image = data.visual === 'image' && data.image ? getProjectImage(data.image
           </dd>
         </div>
       </dl>
+      <div class="story"><Content /></div>
+      {data.context && <p class="context">{data.context}</p>}
+      {data.award && <p class="award"><span class="award-mark" aria-hidden="true">★</span> {data.award}</p>}
     </div>
 
     {
@@ -110,6 +109,7 @@ const image = data.visual === 'image' && data.image ? getProjectImage(data.image
 
 <style>
   .card {
+    scroll-margin-top: calc(var(--bar-height) + 16px);
     display: grid;
     gap: var(--space-5);
     padding: var(--space-4);
@@ -179,7 +179,7 @@ const image = data.visual === 'image' && data.image ? getProjectImage(data.image
   .meta {
     display: grid;
     gap: var(--space-3);
-    margin: var(--space-5) 0 0;
+    margin: 0 0 var(--space-5);
   }
 
   .meta > div {

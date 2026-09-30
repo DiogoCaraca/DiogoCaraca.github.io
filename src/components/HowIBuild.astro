@@ -1,0 +1,101 @@
+---
+import { useTranslations } from '../i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<section class="section" id="how-i-build" aria-labelledby="how-i-build-heading">
+  <div class="container">
+    <div class="section-heading">
+      <span class="index" aria-hidden="true">// 03</span>
+      <h2 id="how-i-build-heading">{t.howIBuild.heading}</h2>
+    </div>
+
+    <ul class="tiles">
+      {
+        t.howIBuild.tiles.map((tile) => (
+          <li>
+            <a class="tile bevel" href={tile.link.href}>
+              <span class="title">{tile.title}</span>
+              <span class="text">{tile.text}</span>
+              {'proof' in tile && <span class="proof tag tag-daily bevel-sm">{tile.proof}</span>}
+              <span class="more index">
+                {tile.link.label} <span aria-hidden="true">↓</span>
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .tiles {
+    display: grid;
+    gap: var(--space-4);
+    list-style: none;
+  }
+
+  @media (min-width: 640px) {
+    .tiles {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 900px) {
+    .tiles {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .tile {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+    height: 100%;
+    padding: var(--space-4);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top-color: var(--cyan-soft);
+    color: var(--text);
+    text-decoration: none;
+    transition:
+      border-color 180ms ease-out,
+      background-color 180ms ease-out;
+  }
+
+  @media (hover: hover) {
+    .tile:hover {
+      border-color: var(--cyan-soft);
+      background: var(--raised);
+    }
+  }
+
+  .title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--fs-lg);
+    line-height: 1.25;
+    color: var(--cyan);
+  }
+
+  .text {
+    color: var(--text-muted);
+    font-size: var(--fs-sm);
+    line-height: 1.5;
+  }
+
+  .more {
+    margin-top: auto;
+    padding-top: var(--space-2);
+    color: var(--text-muted);
+  }
+
+  @media (hover: hover) {
+    .tile:hover .more {
+      color: var(--cyan);
+    }
+  }
+</style>

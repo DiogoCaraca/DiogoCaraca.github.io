@@ -38,10 +38,9 @@ export const en = {
     linkedinShort: 'LinkedIn',
     headshotAlt: 'Portrait of Diogo Caraça',
     whoami: [
-      { key: 'now', value: 'Software Engineer @ siabit AG' },
-      { key: 'product', value: 'ForstControl 3.0 · millions of records' },
-      { key: 'since', value: 'Shipping since 2021' },
       { key: 'stack', value: 'PHP · Laravel · Vue · MySQL' },
+      { key: 'since', value: 'Shipping since 2021' },
+      { key: 'now', value: 'Software Engineer @ siabit AG' },
       {
         key: 'certs',
         value: 'Requirements Engineering (IREB CPRE) · Software Testing (ISTQB)',
@@ -52,8 +51,8 @@ export const en = {
   about: {
     heading: 'About',
     paragraphs: [
-      "I'm Diogo, a full-stack engineer based in Zurich. At siabit AG I work on ForstControl, forestry and accounting software with several million records and several thousand users, mostly in Laravel, Vue and MySQL.",
-      "What I enjoy most is owning the whole path: sitting down with the customer to pin down what's needed, designing the architecture, building it, and testing it until it runs in production. Alongside my 80% job, I'm studying for a BSc in Computer Science at FFHS.",
+      "I'm Diogo, a full-stack engineer based in Zurich, working mainly in Laravel, Vue and MySQL. I like owning problems end to end: pinning down with the customer what's needed, designing the architecture, building it, and testing it until it runs in production.",
+      "Right now that's at siabit AG, on ForstControl, an ERP system for the forestry sector with several million records and several thousand users. Alongside that 80% job, I'm studying for a BSc in Computer Science at FFHS.",
     ],
     skillGroups: [
       { label: 'daily', tone: 'daily', items: ['PHP', 'Laravel', 'JavaScript', 'Vue', 'MySQL', 'REST APIs', 'Docker'] },
@@ -63,14 +62,36 @@ export const en = {
         tone: 'exploring',
         items: ['Google Cloud', 'Terraform', 'Kubernetes', 'Python', 'AI-assisted development'],
       },
-      {
-        label: 'ways of working',
-        tone: 'neutral',
-        items: ['Requirements engineering', 'Software testing', 'Software architecture', 'Agile'],
-      },
     ],
     languagesLabel: 'languages',
     languages: 'German and Portuguese (native) · English (fluent) · French (basic)',
+  },
+  howIBuild: {
+    heading: 'How I build',
+    tiles: [
+      {
+        title: 'Own the whole path',
+        text: 'Requirements → architecture → build → test → go-live.',
+        link: { label: 'HR data sync', href: '#platform-data-exchange' },
+      },
+      {
+        title: 'One contract, many adapters',
+        text: 'My go-to when one core has to talk to several outside systems.',
+        link: { label: 'Finance adapters', href: '#forstcontrol-accounting-adapters' },
+      },
+      {
+        title: 'Requirements before code',
+        text: "Pin down what's needed with the customer first.",
+        proof: 'IREB CPRE',
+        link: { label: 'Certifications', href: '#experience' },
+      },
+      {
+        title: 'Test what ships',
+        text: 'Testing is part of the build, not an afterthought.',
+        proof: 'ISTQB',
+        link: { label: 'Certifications', href: '#experience' },
+      },
+    ],
   },
   projects: {
     heading: 'Projects',
@@ -212,9 +233,9 @@ export const en = {
         heading: 'Currently exploring',
         prompt: '$ ls ~/learning',
         items: [
-          { name: 'google-cloud/', text: 'Building up cloud skills as an internal backup for our infrastructure at siabit.' },
-          { name: 'terraform/', text: 'Infrastructure as code, same context.' },
-          { name: 'kubernetes/', text: 'Container orchestration, same context.' },
+          { name: 'google-cloud/', text: 'Building up cloud skills for running production infrastructure.' },
+          { name: 'terraform/', text: 'Infrastructure as code.' },
+          { name: 'kubernetes/', text: 'Container orchestration.' },
           { name: 'ai-assisted-dev/', text: 'Daily practice. FFHS Skills and this site are results of it.' },
         ],
       },

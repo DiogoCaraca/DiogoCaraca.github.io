@@ -21,7 +21,3 @@ Live at **https://diogocaraca.github.io**.
 | `npm run build` | Build to `dist/` |
 | `npm run preview` | Serve the build locally |
 | `npm run og` | Regenerate `public/og.png` and the touch icon |
-
-## Project docs
-
-Planning and research live in `docs/`: requirements, the landing brief, and the research reports behind the design.
