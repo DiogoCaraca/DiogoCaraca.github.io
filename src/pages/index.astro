@@ -2,7 +2,6 @@
 import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
 import About from '../components/About.astro';
-import HowIBuild from '../components/HowIBuild.astro';
 import Projects from '../components/Projects.astro';
 import GitHubFeed from '../components/GitHubFeed.astro';
 import Experience from '../components/Experience.astro';
@@ -17,7 +16,6 @@ const repos = await getFeedRepos();
 <Base title={t.meta.title} description={t.meta.description}>
   <Hero />
   <About />
-  <HowIBuild />
   <Projects />
   <GitHubFeed repos={repos} />
   <Experience />

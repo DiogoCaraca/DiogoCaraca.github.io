@@ -66,33 +66,6 @@ export const en = {
     languagesLabel: 'languages',
     languages: 'German and Portuguese (native) · English (fluent) · French (basic)',
   },
-  howIBuild: {
-    heading: 'How I build',
-    tiles: [
-      {
-        title: 'Own the whole path',
-        text: 'Requirements → architecture → build → test → go-live.',
-        link: { label: 'HR data sync', href: '#platform-data-exchange' },
-      },
-      {
-        title: 'One contract, many adapters',
-        text: 'My go-to when one core has to talk to several outside systems.',
-        link: { label: 'Finance adapters', href: '#forstcontrol-accounting-adapters' },
-      },
-      {
-        title: 'Requirements before code',
-        text: "Pin down what's needed with the customer first.",
-        proof: 'IREB CPRE',
-        link: { label: 'Certifications', href: '#experience' },
-      },
-      {
-        title: 'Test what ships',
-        text: 'Testing is part of the build, not an afterthought.',
-        proof: 'ISTQB',
-        link: { label: 'Certifications', href: '#experience' },
-      },
-    ],
-  },
   projects: {
     heading: 'Projects',
     diogosPart: "diogo's part",
