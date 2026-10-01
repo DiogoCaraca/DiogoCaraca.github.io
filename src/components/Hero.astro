@@ -201,6 +201,49 @@ const headshot = getPhoto('headshot');
     }
   }
 
+  /* Hover: the copies stay on and jump between slices while the pointer is on the name.
+     Only position and clip change (no on/off flashing), at about four steps per second. */
+  @media (prefers-reduced-motion: no-preference) and (hover: hover) {
+    .name {
+      width: fit-content;
+    }
+
+    .name:hover::before,
+    .name:hover::after {
+      opacity: 1;
+      animation-delay: 0s;
+      animation-duration: 1.2s;
+      animation-timing-function: steps(1, end);
+      animation-iteration-count: infinite;
+    }
+
+    .name:hover::before {
+      animation-name: name-hover-a;
+    }
+
+    .name:hover::after {
+      animation-name: name-hover-b;
+    }
+  }
+
+  @keyframes name-hover-a {
+    0% { clip-path: inset(10% 0 70% 0); transform: translateX(-3px); }
+    20% { clip-path: inset(60% 0 22% 0); transform: translateX(2px); }
+    40% { clip-path: inset(32% 0 46% 0); transform: translateX(-1px); }
+    60% { clip-path: inset(78% 0 6% 0); transform: translateX(3px); }
+    80% { clip-path: inset(4% 0 84% 0); transform: translateX(-2px); }
+    100% { clip-path: inset(46% 0 36% 0); transform: translateX(1px); }
+  }
+
+  @keyframes name-hover-b {
+    0% { clip-path: inset(64% 0 14% 0); transform: translateX(3px); }
+    20% { clip-path: inset(18% 0 66% 0); transform: translateX(-2px); }
+    40% { clip-path: inset(72% 0 8% 0); transform: translateX(2px); }
+    60% { clip-path: inset(26% 0 54% 0); transform: translateX(-3px); }
+    80% { clip-path: inset(50% 0 30% 0); transform: translateX(1px); }
+    100% { clip-path: inset(8% 0 76% 0); transform: translateX(-1px); }
+  }
+
   @keyframes name-glitch-a {
     0% { opacity: 1; transform: translateX(-2px); }
     50% { opacity: 1; transform: translateX(2px); }
