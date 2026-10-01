@@ -201,59 +201,44 @@ const headshot = getPhoto('headshot');
     }
   }
 
-  /* Hover: the copies stay on and jump between slices while the pointer is on the name.
-     Only position and clip change (no on/off flashing), at about four steps per second. */
+  /* Hover: one short burst (about half a second), then the name is clean again even if
+     the pointer stays. The hover animation is appended after the load animation, so
+     leaving the name does not replay the load glitch, and the next hover starts fresh.
+     Only position and clip change, never on/off flashing of the whole word. */
   @media (prefers-reduced-motion: no-preference) and (hover: hover) {
     .name {
       width: fit-content;
     }
 
-    .name:hover::before,
-    .name:hover::after {
-      opacity: 1;
-      animation-delay: 0s;
-      animation-duration: 1.2s;
-      animation-timing-function: steps(1, end);
-      animation-iteration-count: infinite;
-    }
-
     .name:hover::before {
-      animation-name: name-hover-a;
+      animation:
+        name-glitch-a 300ms steps(3) 150ms both,
+        name-hover-a 500ms steps(1, end);
     }
 
     .name:hover::after {
-      animation-name: name-hover-b;
+      animation:
+        name-glitch-b 300ms steps(3) 150ms both,
+        name-hover-b 500ms steps(1, end);
     }
   }
 
   @keyframes name-hover-a {
-    0% { clip-path: inset(10% 0 70% 0); transform: translateX(-3px); }
-    20% { clip-path: inset(60% 0 22% 0); transform: translateX(2px); }
-    40% { clip-path: inset(32% 0 46% 0); transform: translateX(-1px); }
-    60% { clip-path: inset(78% 0 6% 0); transform: translateX(3px); }
-    80% { clip-path: inset(4% 0 84% 0); transform: translateX(-2px); }
-    100% { clip-path: inset(46% 0 36% 0); transform: translateX(1px); }
+    0% { opacity: 1; clip-path: inset(10% 0 70% 0); transform: translateX(-3px); }
+    17% { opacity: 1; clip-path: inset(60% 0 22% 0); transform: translateX(2px); }
+    34% { opacity: 1; clip-path: inset(32% 0 46% 0); transform: translateX(-1px); }
+    51% { opacity: 1; clip-path: inset(78% 0 6% 0); transform: translateX(3px); }
+    68% { opacity: 1; clip-path: inset(4% 0 84% 0); transform: translateX(-2px); }
+    85%, 100% { opacity: 0; transform: none; }
   }
 
   @keyframes name-hover-b {
-    0% { clip-path: inset(64% 0 14% 0); transform: translateX(3px); }
-    20% { clip-path: inset(18% 0 66% 0); transform: translateX(-2px); }
-    40% { clip-path: inset(72% 0 8% 0); transform: translateX(2px); }
-    60% { clip-path: inset(26% 0 54% 0); transform: translateX(-3px); }
-    80% { clip-path: inset(50% 0 30% 0); transform: translateX(1px); }
-    100% { clip-path: inset(8% 0 76% 0); transform: translateX(-1px); }
-  }
-
-  @keyframes name-glitch-a {
-    0% { opacity: 1; transform: translateX(-2px); }
-    50% { opacity: 1; transform: translateX(2px); }
-    100% { opacity: 0; transform: none; }
-  }
-
-  @keyframes name-glitch-b {
-    0% { opacity: 1; transform: translateX(2px); }
-    50% { opacity: 1; transform: translateX(-2px); }
-    100% { opacity: 0; transform: none; }
+    0% { opacity: 1; clip-path: inset(64% 0 14% 0); transform: translateX(3px); }
+    17% { opacity: 1; clip-path: inset(18% 0 66% 0); transform: translateX(-2px); }
+    34% { opacity: 1; clip-path: inset(72% 0 8% 0); transform: translateX(2px); }
+    51% { opacity: 1; clip-path: inset(26% 0 54% 0); transform: translateX(-3px); }
+    68% { opacity: 1; clip-path: inset(50% 0 30% 0); transform: translateX(1px); }
+    85%, 100% { opacity: 0; transform: none; }
   }
 
   .role {
@@ -305,10 +290,73 @@ const headshot = getPhoto('headshot');
 
   /* whoami panel */
   .whoami {
+    position: relative;
     background: var(--raised);
     border: 1px solid var(--border);
     box-shadow: 0 0 48px #00e5ff1a;
     overflow: hidden;
+  }
+
+  /* Hover: a short signal glitch (about half a second). The panel jolts with a
+     cyan/magenta split, a scan band sweeps down, the text tears for a moment and
+     the whoami command types itself again. Small, dim colour changes only. */
+  .whoami::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 0,
+      #00e5ff14 40%,
+      #00e5ff33 48%,
+      #ff2e9726 52%,
+      transparent 60%
+    );
+    background-size: 100% 300%;
+  }
+
+  @media (prefers-reduced-motion: no-preference) and (hover: hover) {
+    .whoami:hover {
+      animation: whoami-jolt 480ms steps(1, end);
+    }
+
+    .whoami:hover::after {
+      animation: whoami-scan 480ms linear;
+    }
+
+    .whoami:hover dl {
+      animation: whoami-tear 480ms steps(1, end);
+    }
+
+    .whoami:hover .cmd {
+      animation:
+        type 400ms steps(6) 300ms backwards,
+        retype 360ms steps(6) 240ms backwards;
+    }
+  }
+
+  @keyframes whoami-jolt {
+    0% { transform: translate(-3px, 1px); box-shadow: -4px 0 0 #00e5ff80, 4px 0 0 #ff2e9780, 0 0 48px #00e5ff1a; }
+    12% { transform: translate(3px, -1px) skewX(-1.5deg); box-shadow: 4px 0 0 #00e5ff80, -4px 0 0 #ff2e9780, 0 0 48px #00e5ff1a; }
+    24% { transform: translate(-1px, 0); box-shadow: -2px 0 0 #00e5ff66, 2px 0 0 #ff2e9766, 0 0 48px #00e5ff1a; }
+    40% { transform: translate(2px, 1px) skewX(1deg); box-shadow: 3px 0 0 #00e5ff66, -3px 0 0 #ff2e9766, 0 0 48px #00e5ff1a; }
+    56%, 100% { transform: none; box-shadow: 0 0 48px #00e5ff1a; }
+  }
+
+  @keyframes whoami-scan {
+    0% { opacity: 1; background-position: 0 100%; }
+    90% { opacity: 1; }
+    100% { opacity: 0; background-position: 0 0; }
+  }
+
+  @keyframes whoami-tear {
+    0% { transform: translateX(4px); text-shadow: -2px 0 #00e5ffaa, 2px 0 #ff2e97aa; clip-path: inset(0 0 55% 0); }
+    10% { transform: translateX(-3px); text-shadow: 2px 0 #00e5ffaa, -2px 0 #ff2e97aa; clip-path: inset(30% 0 0 0); }
+    22% { transform: translateX(2px); text-shadow: -1px 0 #00e5ffaa, 1px 0 #ff2e97aa; clip-path: none; }
+    36% { transform: translateX(-1px); text-shadow: 1px 0 #00e5ff88, -1px 0 #ff2e9788; }
+    50%, 100% { transform: none; text-shadow: none; clip-path: none; }
   }
 
   .titlebar {
@@ -388,6 +436,11 @@ const headshot = getPhoto('headshot');
   }
 
   @keyframes type {
+    from { width: 0; }
+  }
+
+  /* Same as type; a separate name so hover can replay it without restarting type. */
+  @keyframes retype {
     from { width: 0; }
   }
 
