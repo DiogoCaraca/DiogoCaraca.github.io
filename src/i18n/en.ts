@@ -177,7 +177,7 @@ export const en = {
   },
   teaser: {
     heading: 'Beyond code',
-    intro: 'Boxing, a dog, two home countries, and a BSc on the side.',
+    intro: 'My wife, a dog, two home countries, and a BSc on the side.',
     more: 'More beyond code',
     tiles: [
       { id: 'together', title: 'My wife and I', text: 'On our wedding day.', glyph: '♥', photo: 'together', photoPosition: 'top' },
