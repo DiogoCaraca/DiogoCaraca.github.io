@@ -22,7 +22,7 @@ const t = useTranslations(Astro.currentLocale);
             <li>
               <a class="tile bevel" href={`/beyond#${tile.id}`}>
                 {photo ? (
-                  <Image src={photo} alt="" width={400} height={400} fit="cover" class="photo" />
+                  <Image src={photo} alt="" width={400} height={400} fit="cover" position={'photoPosition' in tile ? tile.photoPosition : undefined} class="photo" />
                 ) : (
                   <span class="glyph" aria-hidden="true">{tile.glyph}</span>
                 )}

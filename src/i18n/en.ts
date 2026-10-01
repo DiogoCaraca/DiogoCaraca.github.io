@@ -180,7 +180,7 @@ export const en = {
     intro: 'Boxing, a dog, two home countries, and a BSc on the side.',
     more: 'More beyond code',
     tiles: [
-      { id: 'boxing', title: 'Boxing', text: 'How I switch off, and what the ring teaches.', glyph: '1 · 2', photo: 'boxing' },
+      { id: 'together', title: 'My wife and I', text: 'On our wedding day.', glyph: '♥', photo: 'together', photoPosition: 'top' },
       { id: 'dog', title: 'Daisy', text: 'Our dog, and part of the family.', glyph: 'woof', photo: 'dog' },
       { id: 'roots', title: 'Roots', text: 'Swiss with Portuguese roots, two native languages.', glyph: 'CH ⇄ PT' },
       { id: 'exploring', title: 'Exploring', text: 'Cloud, Kubernetes and AI-assisted development.', glyph: '$ ls ~/learning' },
