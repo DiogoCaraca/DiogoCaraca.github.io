@@ -22,7 +22,6 @@ const photos = {
       <p class="index prompt" aria-hidden="true">{b.prompt}</p>
       <h1 id="beyond-heading">{b.heading}</h1>
       <div class="lead">{b.intro.map((text) => <p>{text}</p>)}</div>
-      {photos.together && <Image src={photos.together} alt="" widths={[640, 1120]} sizes="(min-width: 1120px) 1056px, 100vw" class="wide bevel" />}
     </div>
   </section>
 
@@ -40,13 +39,19 @@ const photos = {
         {b.blocks.boxing.text.map((text) => <p>{text}</p>)}
       </article>
 
-      <article class="block span-2" id="dog" aria-labelledby="dog-h">
-        {photos.dog && <Image src={photos.dog} alt={b.blocks.dog.photoAlt} width={600} height={600} fit="cover" class="photo square bevel" />}
+      <article class="block span-3" id="together" aria-labelledby="together-h">
+        {photos.together && <Image src={photos.together} alt={b.blocks.together.photoAlt} width={800} height={800} fit="cover" position="top" class="photo square bevel" />}
+        <h2 id="together-h">{b.blocks.together.heading}</h2>
+        {b.blocks.together.text.map((text) => <p>{text}</p>)}
+      </article>
+
+      <article class="block span-3" id="dog" aria-labelledby="dog-h">
+        {photos.dog && <Image src={photos.dog} alt={b.blocks.dog.photoAlt} width={800} height={800} fit="cover" class="photo square bevel" />}
         <h2 id="dog-h">{b.blocks.dog.heading}</h2>
         {b.blocks.dog.text.map((text) => <p>{text}</p>)}
       </article>
 
-      <article class="block span-4" id="work-study" aria-labelledby="work-study-h">
+      <article class="block span-2" id="work-study" aria-labelledby="work-study-h">
         {photos.desk && <Image src={photos.desk} alt="" widths={[480, 800]} sizes="(min-width: 900px) 700px, 100vw" class="photo bevel" />}
         <h2 id="work-study-h">{b.blocks.workStudy.heading}</h2>
         {b.blocks.workStudy.text.map((text) => <p>{text}</p>)}
@@ -56,12 +61,12 @@ const photos = {
         </ul>
       </article>
 
-      <article class="block span-3" id="civilian-service" aria-labelledby="civilian-h">
+      <article class="block span-2" id="civilian-service" aria-labelledby="civilian-h">
         <h2 id="civilian-h">{b.blocks.civilianService.heading}</h2>
         {b.blocks.civilianService.text.map((text) => <p>{text}</p>)}
       </article>
 
-      <article class="block span-3 terminal" id="exploring" aria-labelledby="exploring-h">
+      <article class="block span-2 terminal" id="exploring" aria-labelledby="exploring-h">
         <h2 id="exploring-h">{b.blocks.exploring.heading}</h2>
         <p class="mono prompt-line" aria-hidden="true"><span class="dollar">$</span> {b.blocks.exploring.prompt.replace('$ ', '')}</p>
         <dl>
@@ -107,16 +112,6 @@ const photos = {
   .lead {
     font-size: var(--fs-lg);
     line-height: 1.5;
-  }
-
-  .wide {
-    width: 100%;
-    margin-top: var(--space-6);
-    aspect-ratio: 3 / 2;
-    object-fit: cover;
-    /* Portrait photos: keep the faces in the upper part of the frame visible. */
-    object-position: 50% 15%;
-    border: 1px solid var(--border);
   }
 
   .grid-section {

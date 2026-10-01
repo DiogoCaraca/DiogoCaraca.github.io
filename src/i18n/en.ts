@@ -210,6 +210,11 @@ export const en = {
           'The ring rewards the same things good software does: preparation, taking feedback, and staying calm under pressure.',
         ],
       },
+      together: {
+        heading: 'My wife and I',
+        photoAlt: 'Diogo and wife on their wedding day',
+        text: ['On our wedding day.'],
+      },
       dog: {
         heading: 'Daisy',
         photoAlt: "Daisy, Diogo's dog",
