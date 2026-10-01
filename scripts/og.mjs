@@ -3,6 +3,7 @@
 import fs from 'node:fs/promises';
 import satori from 'satori';
 import { Resvg } from '@resvg/resvg-js';
+import sharp from 'sharp';
 
 const font = (path) => fs.readFile(new URL(`../node_modules/${path}`, import.meta.url));
 const fonts = [
@@ -13,6 +14,13 @@ const fonts = [
 ];
 
 const h = (type, style, children) => ({ type, props: { style, children } });
+
+// Optional headshot, picked up by file name like the site does. Square-cropped to 240px.
+const photoDir = new URL('../content/photos/', import.meta.url);
+const headshotFile = (await fs.readdir(photoDir)).find((f) => /^headshot\.(jpe?g|png|webp)$/i.test(f));
+const headshot = headshotFile
+  ? `data:image/png;base64,${(await sharp(new URL(headshotFile, photoDir).pathname).resize(240, 240, { fit: 'cover' }).png().toBuffer()).toString('base64')}`
+  : undefined;
 
 async function render(tree, width, height, out) {
   const svg = await satori(tree, { width, height, fonts });
@@ -37,7 +45,12 @@ const og = h(
     fontFamily: 'Inter',
   },
   [
-    h('div', { display: 'flex', fontFamily: 'JetBrains Mono', fontSize: 26, color: '#858ca1' }, '// hello, world'),
+    h('div', { display: 'flex', alignItems: 'center', gap: 32 }, [
+      ...(headshot
+        ? [{ type: 'img', props: { src: headshot, width: 120, height: 120, style: { border: '1px solid #2a2f3f' } } }]
+        : []),
+      h('div', { display: 'flex', fontFamily: 'JetBrains Mono', fontSize: 26, color: '#858ca1' }, '// hello, world'),
+    ]),
     h('div', { display: 'flex', flexDirection: 'column' }, [
       h('div', { display: 'flex', fontFamily: 'Chakra Petch', fontWeight: 600, fontSize: 104, lineHeight: 1.05 }, 'Diogo Caraça'),
       h('div', { display: 'flex', fontWeight: 600, fontSize: 44, marginTop: 20 }, 'Full-Stack Engineer · Laravel & Vue'),
