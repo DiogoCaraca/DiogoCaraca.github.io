@@ -1,0 +1,191 @@
+---
+// Crosshair cursor for mouse users. Pure decoration: without JavaScript, on touch
+// screens, in forced-colors mode or in print, the normal cursor stays.
+---
+
+<div class="reticle" aria-hidden="true">
+  <svg viewBox="0 0 40 40" width="40" height="40">
+    <!-- Each shape is drawn twice: a dark halo underneath keeps it visible on cyan or magenta fills. -->
+    <g class="ticks">
+      <path class="halo" d="M20 3v8M20 29v8M3 20h8M29 20h8" />
+      <path d="M20 3v8M20 29v8M3 20h8M29 20h8" />
+    </g>
+    <g class="corners">
+      <path class="halo" d="M7 13V7h6M27 7h6v6M33 27v6h-6M13 33H7v-6" />
+      <path d="M7 13V7h6M27 7h6v6M33 27v6h-6M13 33H7v-6" />
+    </g>
+    <g class="dot">
+      <circle class="halo" cx="20" cy="20" r="1.75" />
+      <circle cx="20" cy="20" r="1.75" />
+    </g>
+  </svg>
+</div>
+
+<script>
+  const fine = window.matchMedia('(hover: hover) and (pointer: fine)');
+  const forced = window.matchMedia('(forced-colors: active)');
+  const reticle = document.querySelector<HTMLElement>('.reticle');
+  const clickable = 'a[href], button, summary, label, select, [role="button"], [tabindex]:not([tabindex="-1"])';
+
+  if (reticle && fine.matches && !forced.matches) {
+    const root = document.documentElement;
+    root.classList.add('has-reticle');
+
+    let x = 0;
+    let y = 0;
+    let frame = 0;
+    const move = () => {
+      frame = 0;
+      reticle.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+    };
+
+    document.addEventListener('pointermove', (event) => {
+      if (event.pointerType !== 'mouse') return;
+      x = event.clientX;
+      y = event.clientY;
+      reticle.classList.add('is-visible');
+      if (!frame) frame = requestAnimationFrame(move);
+    });
+
+    document.addEventListener('pointerover', (event) => {
+      const target = event.target instanceof Element ? event.target : null;
+      reticle.classList.toggle('is-locked', Boolean(target?.closest(clickable)));
+      // Follow the section accent: cyan for work, magenta on the personal parts.
+      const accent = target ? getComputedStyle(target).getPropertyValue('--accent').trim() : '';
+      if (accent) reticle.style.setProperty('--reticle', accent);
+    });
+
+    document.addEventListener('mouseout', (event) => {
+      if (!event.relatedTarget) reticle.classList.remove('is-visible');
+    });
+    document.addEventListener('pointerdown', () => reticle.classList.add('is-firing'));
+    document.addEventListener('pointerup', () => reticle.classList.remove('is-firing'));
+  }
+</script>
+
+<style>
+  .reticle {
+    --reticle: var(--accent);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 150ms ease-out;
+  }
+
+  .reticle.is-visible {
+    opacity: 1;
+  }
+
+  svg {
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    width: 40px;
+    max-width: none;
+    height: 40px;
+    overflow: visible;
+    fill: none;
+    stroke: var(--reticle);
+    stroke-width: 1.5;
+    stroke-linecap: square;
+    filter: drop-shadow(0 0 4px color-mix(in srgb, var(--reticle) 50%, transparent));
+    transition:
+      transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      stroke 150ms ease-out;
+  }
+
+  .ticks,
+  .corners,
+  .dot {
+    transform-origin: 20px 20px;
+    transition:
+      transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      opacity 180ms ease-out;
+  }
+
+  .corners {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+
+  .halo {
+    stroke: #0e1016;
+    stroke-width: 4;
+  }
+
+  .dot circle {
+    fill: var(--reticle);
+    stroke: none;
+  }
+
+  .dot .halo {
+    fill: none;
+    stroke: #0e1016;
+    stroke-width: 2.5;
+  }
+
+  /* Over something clickable: rotate, pull the ticks in, lock the brackets on. */
+  .is-locked svg {
+    transform: rotate(45deg);
+  }
+
+  .is-locked .ticks {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+
+  .is-locked .corners {
+    opacity: 1;
+    transform: scale(1);
+    animation: lock-pulse 1.4s ease-in-out 220ms infinite;
+  }
+
+  .is-locked .dot {
+    transform: scale(1.4);
+  }
+
+  .is-firing svg {
+    transform: scale(0.8);
+  }
+
+  .is-locked.is-firing svg {
+    transform: rotate(45deg) scale(0.8);
+  }
+
+  @keyframes lock-pulse {
+    50% {
+      transform: scale(0.88);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    svg,
+    .ticks,
+    .corners,
+    .dot {
+      transition: none;
+      animation: none !important;
+    }
+
+    .is-locked svg,
+    .is-firing svg {
+      transform: none;
+    }
+  }
+
+  @media print {
+    .reticle {
+      display: none;
+    }
+  }
+
+  :global(html.has-reticle),
+  :global(html.has-reticle *) {
+    cursor: none !important;
+  }
+</style>

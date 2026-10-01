@@ -6,7 +6,7 @@ Live at **https://diogocaraca.github.io**.
 ## Stack and key decisions
 
 - **Astro, static output.** No server, no backend. Deployed to GitHub Pages by GitHub Actions.
-- **Zero required JavaScript.** Every effect is CSS; the mobile menu and project details use native `<details>`. The only script closes the mobile menu after a tap.
+- **Zero required JavaScript.** Every effect is CSS; the mobile menu and project details use native `<details>`. Two small scripts: one closes the mobile menu after a tap, one draws the crosshair cursor for mouse users (the normal cursor stays without JavaScript, on touch screens and in forced-colors mode).
 - **Content outside the code.** Projects live in `content/projects/*.md`, photos in `content/photos/`. All other copy lives in `src/i18n/en.ts`.
 - **i18n-ready.** English at launch. German and Portuguese are added as `src/i18n/de.ts` and `pt.ts` plus a locale entry in `astro.config.mjs`; the language switcher appears automatically once a second locale exists.
 - **Build-time GitHub feed.** The "On GitHub" section is fetched from the GitHub API at build time, filtered (no forks, no archived repos, description required), and hidden when fewer than two repos qualify. A cached copy in `src/data/github-cache.json` keeps builds working offline. A weekly scheduled build keeps it fresh.
