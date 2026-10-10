@@ -6,6 +6,7 @@ location: "Zurich, Switzerland"
 github: "https://github.com/DiogoCaraca"
 linkedin: "https://www.linkedin.com/in/diogo-caraca/"
 socials:
+  - { platform: "Boot.dev", url: "https://www.boot.dev/u/well-documentedoutside66" }
   - { platform: "Instagram", url: "https://www.instagram.com/diogo.miguel.caraca/" }
 skills:
   strong: [PHP, JavaScript, HTML/CSS, MySQL, Git]

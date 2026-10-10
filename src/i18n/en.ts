@@ -19,6 +19,7 @@ export const en = {
     githubProfile: 'GitHub profile',
     linkedinProfile: 'LinkedIn profile',
     instagramProfile: 'Instagram profile',
+    bootdevProfile: 'Boot.dev profile',
     home: 'Diogo Caraça, home',
   },
   nav: {
@@ -106,6 +107,13 @@ export const en = {
         chips: ['part-time'],
         bullets: ['Part-time, alongside an 80% engineering role.'],
         link: { label: 'How I combine work and study', href: '/beyond#work-study' },
+      },
+      {
+        type: 'cert',
+        start: '2026-10',
+        title: 'Linux · Boot.dev Learn Linux course',
+        org: 'Boot.dev',
+        link: { label: 'View certificate', href: 'https://www.boot.dev/certificates/4ef8a796-1432-4f4a-9c0a-1d3e89c40d1d' },
       },
       {
         type: 'cert',

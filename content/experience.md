@@ -46,6 +46,7 @@ education:
     end: "2021-07"
 
 certifications:
+  - { name: "Learn Linux (course certificate)", issuer: "Boot.dev", date: "2026-10" }
   - { name: "CPRE Foundation Level, Requirements Engineering", issuer: "IREB", date: "2026-01" }
   - { name: "ISTQB Certified Tester Foundation Level", issuer: "Swiss Testing Board", date: "2019-12" }
 ---
